@@ -1,13 +1,14 @@
 import * as React from 'react'
+import styled from 'styled-components'
+import { ModifierKeys, applyStyleModifiers } from 'styled-components-modifiers'
 
 import { ReactNodeNoStrings } from '../../../types'
-import { Box, BoxProps } from '../Box'
 import { Spinner } from '../Spinner'
-import { Typography } from '../Typography'
+//import { Typography } from '../Typography'
 import { getCenterProps } from './utils'
 import * as styles from './styles.css'
 
-type NativeButtonProps = React.AllHTMLAttributes<HTMLButtonElement>
+type NativeButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 type NativeAnchorProps = React.AllHTMLAttributes<HTMLAnchorElement>
 
 type BaseProps = {
@@ -29,8 +30,6 @@ type BaseProps = {
   tabIndex?: NativeButtonProps['tabIndex']
   type?: NativeButtonProps['type']
   variant?: styles.Variant
-  width?: BoxProps['width']
-  zIndex?: BoxProps['zIndex']
   pressed?: boolean
   shadowless?: boolean
   onClick?: React.MouseEventHandler<HTMLElement> | undefined
@@ -64,6 +63,34 @@ export type Props = BaseProps &
   (WithTone | WithoutTone) &
   (WithAnchor | WithoutAnchor)
 
+const BUTTON_MODIFIERS = {
+  small: () => `
+    font-size: 14px;
+    padding: 10px 12px;
+  `,
+  medium: () => `
+    font-size: 18px;
+    padding: 15px 20px;
+  `,
+}
+
+interface ModifierProps {
+  modifiers?: ModifierKeys
+}
+
+const ButtonContainer = styled('button')<ModifierProps>`
+  border-radius: 8px;
+  border: none;
+  font-size: 18px;
+  ${({ theme: t }) => `
+    color: ${t.primaryButton.text};
+    background: ${t.primaryButton.background};
+  `}
+
+  padding: 15px 20px;
+  ${applyStyleModifiers(BUTTON_MODIFIERS)}
+`
+
 export const Button = React.forwardRef(
   (
     {
@@ -74,76 +101,64 @@ export const Button = React.forwardRef(
       href,
       prefix,
       loading,
-      rel,
       shape,
       size = 'medium',
       suffix,
-      tabIndex,
-      target,
-      tone = 'accent',
-      type,
-      variant = 'primary',
-      width,
-      zIndex,
+      // tone = 'accent',
+      // type,
+      // variant = 'primary',
       onClick,
-      pressed = false,
-      shadowless = false,
-    }: Props,
+    }: // pressed = false,
+    // shadowless = false,
+    Props,
     ref: React.Ref<HTMLButtonElement>,
   ) => {
-    const labelContent = (
-      <Typography color="inherit" ellipsis size="inherit" weight="semiBold">
-        {children}
-      </Typography>
-    )
+    let childContent
+    const labelContent = children
+    //   <Typography color="inherit" ellipsis size="inherit" weight="semiBold">
+    //     {children}
+    //   </Typography>
+    // )
 
-    let childContent: ReactNodeNoStrings
+    // let childContent: ReactNodeNoStrings
     if (shape) {
       childContent = loading ? <Spinner color="current" /> : labelContent
     } else {
       childContent = (
         <>
           {prefix && (
-            <Box {...getCenterProps(center, size, 'left')}>{prefix}</Box>
+            <div {...getCenterProps(center, size, 'left')}>{prefix}</div>
           )}
           {labelContent}
 
           {(loading || suffix) && (
-            <Box {...getCenterProps(center, size, 'right')}>
+            <div {...getCenterProps(center, size, 'right')}>
               {loading ? <Spinner color="current" /> : suffix}
-            </Box>
+            </div>
           )}
         </>
       )
     }
 
+    if (as == 'a') {
+      return (
+        <ButtonContainer as="a" href={href}>
+          {childContent}
+        </ButtonContainer>
+      )
+    }
+
     return (
-      <Box
-        as={as}
-        className={styles.variants({
-          center,
-          disabled,
-          shape,
-          size,
-          tone,
-          variant,
-          pressed,
-          shadowless,
-        })}
+      <ButtonContainer
+        as="button"
         disabled={disabled}
-        href={href}
-        position={zIndex && 'relative'}
+        modifiers={[size]}
         ref={ref}
-        rel={rel}
-        tabIndex={tabIndex}
-        target={target}
-        type={type}
-        width={width ?? 'max'}
-        zIndex={zIndex}
+        type="button"
         onClick={onClick}
       >
         {childContent}
-      </Box>
+      </ButtonContainer>
     )
   },
 )
