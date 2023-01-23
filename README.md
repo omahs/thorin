@@ -59,7 +59,7 @@ const App = () => {
 
 ## Use Components
 
-A list of components with examples are available on the [project website](https://thorin.ens.domains).
+A list of components with examples is available on the [project website](https://thorin.ens.domains).
 
 A simple example to get you started:
 
@@ -99,7 +99,7 @@ Before development, it is recommended that you read the following:
 - [Development Guide](https://thorin.ens.domains/guides/development) - Information and tips to help you when working on this project including:
   - [Component Groups](https://thorin.ens.domains/guides/development#component-groups) - How the components are organized.
   - [Adding Components](https://thorin.ens.domains/guides/development#adding-components) - A list of files that need to be added or modified for each component.
-  - [Style Guidlines](https://thorin.ens.domains/guides/development#style-guidelines) - Rules and tips to follow to keep the project code consistent and maintainable.
+  - [Style Guidelines](https://thorin.ens.domains/guides/development#style-guidelines) - Rules and tips to follow to keep the project code consistent and maintainable.
   - [Common Issues](https://thorin.ens.domains/guides/development#common-issues) - A list of known issues and how to resolve them.
 - [Playroom Guide](https://thorin.ens.domains/guides/playroom) - Information on how to add state and interactivity to sample code in playroom and mdx code previews.
 
